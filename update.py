@@ -22,7 +22,7 @@ print('Latest update time is:',date)
 states = pd.read_csv("https://prsindia.org/covid-19/cases/download")
 #states = pd.read_csv("https://api.covid19india.org/csv/latest/states.csv")
 #print(states)
-states=states[states["Date"]!="01/01/1970"]
+states=states[states["Date"].str.contains("202")]
 #print(states)
 #states = pd.read_csv("https://prsindia.org/covid-19/cases/download")
 # change column names to lowercase
@@ -31,6 +31,7 @@ states.columns= states.columns.str.lower()
 # convert date column
 #states['date'] = pd.to_datetime(states['date'], format= '%Y-%m-%d')
 states['date'] = pd.to_datetime(states['date'], format= '%d/%m/%Y')
+print(states['date'].unique())
 #states0=states.copy()
 #print(states[states["region"]=="Kerala"])
 states[states["region"]=="Assam"]["confirmed cases"].diff().plot()
