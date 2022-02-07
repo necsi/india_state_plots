@@ -1,0 +1,196 @@
+<!--
+    THIS EXAMPLE WAS DOWNLOADED FROM https://echarts.apache.org/examples/en/editor.html?c=line-race&version=5.3.0
+-->
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="height: 100%; margin: 0">
+        <div id="container" style="height: 100%"></div>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
+        <!-- Uncomment this line if you want to dataTool extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/extension/dataTool.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to use gl extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to echarts-stat extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to use map
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/map/js/world.js"></script>
+        -->
+        <!-- Uncomment these two lines if you want to use bmap extension
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=<Your Key Here>"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/extension/bmap.min.js"></script>
+        -->
+
+        <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+
+var option;
+
+var ROOT_PATH = ''
+
+$.get(
+  ROOT_PATH + 'life-expectancy-table.json',
+  function (_rawData) {
+    run(_rawData);
+  }
+);
+function run(_rawData) {
+  // var countries = ['Australia', 'Canada', 'China', 'Cuba', 'Finland', 'France', 'Germany', 'Iceland', 'India', 'Japan', 'North Korea', 'South Korea', 'New Zealand', 'Norway', 'Poland', 'Russia', 'Turkey', 'United Kingdom', 'United States'];
+  const countries = [
+    'Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+  ];
+  const datasetWithFilters = [];
+  const seriesList = [];
+  echarts.util.each(countries, function (country) {
+    var datasetId = 'dataset_' + country;
+    datasetWithFilters.push({
+      id: datasetId,
+      fromDatasetId: 'dataset_raw',
+      transform: {
+        type: 'filter',
+        config: {
+          and: [
+            { dimension: 'Time', gte: 1 },
+            { dimension: 'Country', '=': country }
+          ]
+        }
+      }
+    });
+    seriesList.push({
+      type: 'line',
+      datasetId: datasetId,
+      showSymbol: false,
+      name: country,
+      endLabel: {
+        show: true,
+        formatter: function (params) {
+          return params.value[3] + ': ' + params.value[0];
+        }
+      },
+      labelLayout: {
+        moveOverlap: 'shiftY'
+      },
+      emphasis: {
+        focus: 'series'
+      },
+    //"cases","deaths","recovered","Country","Time"
+      encode: {
+        x: 'cases',
+        y: 'deaths',
+        label: ['Country', 'deaths'],
+        itemName: 'Time',
+        tooltip: ['Country']
+      }
+    });
+  });
+    
+    
+  option = {
+    animationDuration: 10000,
+    dataset: [
+      {
+        id: 'dataset_raw',
+        source: _rawData
+      },
+      ...datasetWithFilters
+    ],
+    title: {
+      text: 'Income of Germany and France since 1950'
+    },
+    tooltip: {
+      order: 'valueDesc',
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: 'category',
+      nameLocation: 'middle',
+         name: 'cases'
+    },
+    yAxis: {
+      name: 'deaths'
+    },
+    grid: {
+      right: 140
+    },
+    series: seriesList
+  };
+    /*
+     option = {
+       // title:"Deaths vs. Comfirmed",
+         title: {
+        text: 'COVID-19: Deaths vs. Comfirmed',
+        subtext: 'Last updated: '+new Date(data["timeline"][data["timeline"].length-1]*1000).toString(),
+        left: 'center',
+        align: 'right'
+    },
+        visualMap: {
+            show: false,
+            min: 0,
+            max: 100,
+            dimension: 1
+        },
+        legend: {
+            data: data.countries,
+            orient: "vertical",
+         //   selectedMode: 'single',
+            left: 780,
+            top:100,
+            height:500,
+            type:"scroll"
+        },
+        grid: {
+            left: 40,
+            right: 120,
+            bottom: 0,
+            containLabel: true,
+            top: 80
+        },
+        xAxis: [
+            {
+            type: 'value',
+            min:0,
+             nameGap:1,
+          name:"Confirmed"
+        },{
+        type: 'value',
+        data: [0, 1, 2, 3, 4, 4.5]
+    }],
+        yAxis: {
+            type: 'value',
+            scale: true,
+            min:0,
+             nameGap:15,
+             name:"       Deaths"
+            
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {}
+            }
+        },
+        dataZoom: {
+            type: 'inside'
+        },
+        series: seriesList
+    };*/
+  myChart.setOption(option);
+}
+
+if (option && typeof option === 'object') {
+    myChart.setOption(option);
+}
+
+        </script>
+    </body>
+</html>
+    

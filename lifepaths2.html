@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ECharts Demo</title>
+<style>
+    
+    #echart,#echart2{
+        
+        width:900px;
+        height:600px;
+    }    
+</style>
+</head>
+
+<body>
+       <div id="echart"></div>
+     <div id="echart2"></div>
+    
+       <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	 crossorigin="anonymous"></script>
+       
+    
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.1/dat.gui.js"></script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+    
+    
+
+ 
+
+   <script>
+    //removePreviousChart('echart');
+       
+       
+var app={};
+   /// $("#"+elementId+"_title").html("<h5 align='center'>"+title+"</h5>");
+var myChart = echarts.init(document.getElementById('echart'));
+//Orders,Lifespan,Time Between Orders
+//Orders,Lifespan,Time Between Orders,first time
+
+   //'#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'  
+$.get('lifepaths.json', function (data) {
+    
+   
+   // console.log(data);
+    var series = data.series;
+   // console.log(data["timeline"][data["timeline"].length-1]);
+    option = {
+       // title:"Deaths vs. Comfirmed",
+         title: {
+        text: 'COVID-19: Deaths vs. Comfirmed',
+        subtext: 'Last updated: '+new Date(data["timeline"][data["timeline"].length-1]*1000).toString(),
+        left: 'center',
+        align: 'right'
+    },
+        visualMap: {
+            show: false,
+            min: 0,
+            max: 100,
+            dimension: 1
+        },
+        legend: {
+            data: data.countries,
+            orient: "vertical",
+         //   selectedMode: 'single',
+            left: 780,
+            top:100,
+            height:500,
+            type:"scroll"
+        },
+        grid: {
+            left: 40,
+            right: 120,
+            bottom: 0,
+            containLabel: true,
+            top: 80
+        },
+        xAxis: [
+            {
+            type: 'value',
+            min:0,
+             nameGap:1,
+          name:"Confirmed"
+        },{
+        type: 'value'
+       // data: [0, 1, 2, 3, 4, 4.5]
+    }],
+        yAxis: {
+            type: 'value',
+            scale: true,
+            min:0,
+             nameGap:15,
+             name:"       Deaths"
+            
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {}
+            }
+        },
+        dataZoom: {
+            type: 'inside'
+        },
+        series: []
+    };
+    /*
+    
+    #e41a1c
+#377eb8
+#4daf4a
+#984ea3
+#ff7f00
+#ffff33
+#a65628
+#f781bf
+#999999
+
+ 'Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+    
+    */
+  var cout={"Andaman and Nicobar Islands":"#e41a1c", "Andhra Pradesh":"#377eb8", "Arunachal Pradesh":"#4daf4a", "Assam":"#984ea3", "Bihar":"#ff7f00", "Chandigarh":"#ffff33", "Chhattisgarh":"#a65628", "Dadra and Nagar Haveli and Daman and Diu":"#f781bf", "Goa":"#6e7074", "Gujarat":"#b2df8a",
+           'Haryana':"#cccccc", 'Himachal Pradesh':"#cccccc", 'Jammu and Kashmir':"#cccccc", 'Jharkhand':"#cccccc", 'Karnataka':"#cccccc", 'Kerala':"#cccccc", 'Ladakh':"#cccccc", 'Lakshadweep':"#cccccc", 'Madhya Pradesh':"#cccccc", 'Maharashtra':"#cccccc", 'Manipur':"#cccccc", 'Meghalaya':"#cccccc", 'Mizoram':"#cccccc", 'Nagaland':"#cccccc", 'Odisha':"#cccccc", 'Puducherry':"#cccccc", 'Punjab':"#cccccc", 'Rajasthan':"#cccccc", 'Sikkim':"#cccccc", 'Tamil Nadu':"#cccccc", 'Telangana':"#cccccc", 'Tripura':"#cccccc", 'Uttar Pradesh':"#cccccc", 'Uttarakhand':"#cccccc", 'West Bengal':"#cccccc"
+           
+           };
+var shapes={"China":"circle", "France":"rect", "Germany":"roundRect", "Iran":"triangle", "Italy":"diamond", "Netherlands":"pin", "South Korea":"arrow", "Spain":"circle", "United Kingdom":"rect", "United States":"roundRect"}
+
+//'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none';
+data.countries.forEach(function (country) {
+       // console.log(country);
+        var data = series.map(function (yearData) {
+              // console.log(yearData);
+            var inter=0;
+            var item = yearData.filter(function (item) {
+                return item[3] === country;
+            })[0];
+            //[Math.log10(item[1]+0.001),Math.log10(item[0]+0.001),d3.keys(cout).indexOf(item[3])*Math.pow(1000,d3.keys(cout).indexOf(item[3])),item[3],item[4]],
+           // console.log(yearData[4]);
+          //  console.log(d3.keys(cout).indexOf(item[3])*1000000000);
+            var dd=new Date(yearData[4]*1000).toString().split(" ");
+            var nn=yearData[3]+" "+dd[1]+" "+dd[2]
+            return {
+                id:"item"+inter.toString(),
+                label: {
+                    show: inter==60,
+                    position: 'top'
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                name: nn,
+                value: [Math.log10(yearData[1]+1),Math.log10(yearData[0]+1),d3.keys(cout).indexOf(yearData[3])*Math.pow(1000,d3.keys(cout).indexOf(yearData[3])),yearData[3],yearData[4]],
+                 symbol: "circle"//shapes[item[3]]
+            };
+            inter +=1;
+        });
+       // console.log(data);
+        var links = data.map(function (item, idx) {
+            return {
+                source: idx,
+                target: idx + 1
+            };
+        });
+       //console.log(data);
+            
+       links.pop();
+ //console.log(cout[item[3]]);
+        
+      
+option.series.push
+        ({
+            name: country,
+            type: 'graph',
+            coordinateSystem: 'cartesian2d',
+            data: data,
+            links: links,
+           // edgeSymbol: ['none', 'arrow'],
+           // symbol: shapes[country],
+            edgeSymbolSize: 5,
+            legendHoverLink: false,
+            lineStyle: {
+        normal:{
+            color: cout[country]
+        }
+            },
+            itemStyle:
+    {
+        normal:
+            {
+                
+                //symbolSize:200,
+                borderWidth: 5,
+                color:cout[country],
+                borderColor: cout[country]
+            }
+        
+    },//'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
+            label: {
+                  normal:{
+            color: "#333"//cout[country]
+        },
+                position: 'right'
+            },
+            symbolSize: 5,
+            animationDelay: function (idx) {
+                return idx * 100;
+            }
+        });
+    });
+    
+    console.log(option.series);
+   
+ /*option.series.push({data: [0, 0,1 , 4, 5, 0],
+         name: '邮件营销',
+            type: 'line',
+            stack: '总量',
+            xAxisIndex: 0         
+    });*/
+   //https://echarts.apache.org/examples/en/editor.html?c=multiple-x-axis
+//1%,10%
+    
+    
+
+myChart.setOption(option);
+    
+    /*
+var c = document.createElement("CANVAS");
+    
+c.id = "CursorLayer";
+c.width = 725;
+c.height = 500;
+c.style.zIndex = -9;
+c.style.position = "absolute";
+c.style.top = "88px";  
+    c.style.left = "62px";
+c.style.border = "1px solid";
+var ctx = c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(360,500);
+ctx.lineTo(725,200);
+ctx.stroke();
+//console.log(c);
+    
+    
+   // var ctx = c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(240,500);
+ctx.lineTo(725,100);
+ctx.stroke();
+    
+   // var ctx = c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(120,500);
+ctx.lineTo(725,0);
+ctx.stroke();
+    ctx.font = "16px Arial";
+ctx.fillText("10%", 670, 20);
+    
+ctx.beginPath();
+ctx.moveTo(120,500);
+ctx.lineTo(725,0);
+ctx.stroke();
+    ctx.font = "16px Arial";
+ctx.fillText("1%", 670, 105); 
+    
+ctx.beginPath();
+ctx.moveTo(120,500);
+ctx.lineTo(725,0);
+ctx.stroke();
+    ctx.font = "16px Arial";
+ctx.fillText("0.1%", 670, 205);     
+    
+    var font, lineHeight, x, y;
+
+x = 100;
+y = 600;
+font = 20;
+lineHeight = 15; // this is guess and check as far as I know
+//c.font = font + 'px Arial';
+
+
+// Right Aligned
+/*c.save();
+c.translate(x, y);
+c.rotate(-Math.PI / 4);
+
+c.textAlign = 'right';
+c.fillText('right', 0, lineHeight / 2);
+
+//c.restore();
+
+c.fillStyle = 'red';
+c.fillRect(x, y, 2, 2);
+
+
+// Center
+c.fillStyle = 'black';
+x = 150;
+y = 100;
+
+c.save();
+c.translate(x, y);
+c.rotate(-Math.PI / 4);
+
+c.textAlign = 'center';
+c.fillText('center', 0, lineHeight / 2);
+
+c.restore();
+
+c.fillStyle = 'red';
+c.fillRect(x, y, 2, 2);
+
+
+// Left
+c.fillStyle = 'black';
+x = 200;
+y = 100;
+
+c.save();
+c.translate(x, y);
+c.rotate(-Math.PI / 4);
+
+c.textAlign = 'left';
+c.fillText('left', 0, lineHeight / 2);
+
+c.restore();
+
+c.fillStyle = 'red';
+c.fillRect(x, y, 2, 2);
+   */ 
+    
+    
+    
+    
+   // document.getElementById("echart2").appendChild(c);
+    // myChart.setOption(option1);
+    // myChart.setOption(option2);
+});
+
+    </script>
+
+
+</body>
+
+</html>
