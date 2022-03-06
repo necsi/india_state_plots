@@ -29,7 +29,7 @@ df = df[df['Year'] > 2019] # filter out rows with year = 1970,...etc
 df['Date'] = pd.to_datetime(df.Date, dayfirst=True)
 
 
-for item in list(pop.keys()):
+for item in list(pop.keys())[15:]:
     state = item # can choose any state from df.Region.unique()
     threshold = 1 # x cases per million population
     offset_days = 60 # keep the most recent 60 days
@@ -41,8 +41,7 @@ for item in list(pop.keys()):
         title = state
         fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
         ax.plot(focus.index, focus.values, alpha=0.3)#, label=r'Daily cases in %s'%title)
-        ax.plot(focus.rolling(window=7, min_periods=1, center=True).mean(), c='green',alpha=0.3, ls='--')
-    
+        ax.plot(focus.rolling(window=7, min_periods=1, center=True).mean(), c='green',alpha=0.3, ls='--')    
         for i,(a,b) in enumerate(days):
             slope, intercept = optimize.curve_fit(linear_fit, np.arange(a,b), np.log(focus.values[a:b]+1))[0]
             #print(np.arange(a,b))
@@ -70,4 +69,5 @@ for item in list(pop.keys()):
         plt.tight_layout()
         plt.savefig(state+'.png')
     except:
+        print(item)
         continue
