@@ -29,7 +29,7 @@ df = df[df['Year'] > 2019] # filter out rows with year = 1970,...etc
 df['Date'] = pd.to_datetime(df.Date, dayfirst=True)
 
 
-for item in list(pop.keys()):
+for item in list(pop.keys())[15:]:
     state = item # can choose any state from df.Region.unique()
     threshold = 20 # x cases per million population
     offset_days = 60 # keep the most recent 60 days
@@ -47,7 +47,7 @@ for item in list(pop.keys()):
             #print(np.arange(a,b))
             ax.plot(np.arange(a,b), np.exp(np.arange(a,b)*slope + intercept), c=('C'+str(i+1)))
             ax.annotate(np.round(np.exp(slope),3), xy=((a+b-2)/2, np.exp((a+b+2)/2*slope + intercept)), fontsize=24, c=('C'+str(i+1)))
-        ax.set_yscale('log') #turn on/off this line to use log or linear scale
+        #ax.set_yscale('log') #turn on/off this line to use log or linear scale
 
         b = np.array([focus.values[-1]])
 
@@ -58,7 +58,7 @@ for item in list(pop.keys()):
         #pd.to_datetime(focus.index).strftime('%y/%m/%d')                                                                                    
         date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%y/%m/%d')  for x in range(0+numdays)]
         #print(date_list)                                                                                                                    
-        ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
+        ax.plot(date_list,[threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
         ax.legend(prop={'size': 30})
         ax.tick_params(labelsize=20)
         ax.xaxis.set_major_locator(plt.MaxNLocator(8))
@@ -67,7 +67,7 @@ for item in list(pop.keys()):
         ax.annotate(s=str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-9, 10), fontsize=20, ha='center', c='C4')
         plt.title(state, fontsize=20)
         plt.tight_layout()
-        plt.savefig(state+'_1.png')
+        plt.savefig(state+'_2.png')
     except:
         print(item)
         continue
