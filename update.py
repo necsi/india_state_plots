@@ -554,9 +554,13 @@ state_final_trans_mar1["date1"]=pd.to_datetime(state_final_trans_mar1["date"])
 for item in lk:
     da=state_final_trans_mar1[state_final_trans_mar1["state"]==item]
     tt=[20 for x in range(0,len(da))]
-    plt.plot(da["date1"],tt)
-    plt.plot(da["date1"],da["avg_cases"])
-    plt.title(item)
+    fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
+    ax.plot(da["date1"],tt)
+    ax.plot(da["date1"],da["avg_cases"],c='C4')
+    ax.tick_params(labelsize=20)
+    ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+    plt.title(item, fontsize=20)
+    plt.tight_layout()
     plt.savefig(item+"_3.png", dpi=150)
     plt.close()
     #plt.show()
