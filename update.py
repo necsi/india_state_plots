@@ -138,6 +138,7 @@ pivot_cases = pd.pivot_table(states_mod, index = "date", columns = "region", val
 # drop non-state columns
 pivot_cases = pivot_cases.drop(columns=do_not_include).fillna(0)
 #print(pivot_cases)
+plt.figure(figsize=(15,10))
 pivot_cases["Kerala"].plot()
 #plt.show()
 ## replacing nan total cases with 0
@@ -519,6 +520,7 @@ state_final_trans_mar1 = state_final#[states4['date'] <= '2021-11-18']
 print(state_final_trans_mar1)
 # In[60]:
 state_final_trans_mar2=state_final_trans_mar1[state_final_trans_mar1['state']=="Assam"]
+plt.figure(figsize=(15,10))
 state_final_trans_mar2["total_cases"].plot()
 #print(state_final_trans_mar2)
 plt.title("Assam")
