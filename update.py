@@ -563,6 +563,6 @@ for item in lk:
     ax.xaxis.set_major_locator(plt.MaxNLocator(8))
     plt.title(item, fontsize=20)
     plt.tight_layout()
-    plt.savefig(item+"_3.png", dpi=150)
+    plt.savefig('images/'+item+"_3.png", dpi=150)
     plt.close()
     #plt.show()
