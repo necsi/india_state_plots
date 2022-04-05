@@ -29,7 +29,7 @@ df = df[df['Year'] > 2019] # filter out rows with year = 1970,...etc
 df['Date'] = pd.to_datetime(df.Date, dayfirst=True)
 
 
-for item in list(pop.keys())[:14]:
+for item in list(pop.keys()):
     state = item # can choose any state from df.Region.unique()
     threshold = 1 # x cases per million population
     offset_days = 60 # keep the most recent 60 days
@@ -51,7 +51,7 @@ for item in list(pop.keys())[:14]:
 
         b = np.array([focus.values[-1]])
 
-        while b[-1] > pop[state] / 1e6 * threshold :
+        while b[-1] > pop[state] / 1e6 * threshold and slope <0 :
             b = np.append(b, b[-1]*(1+slope))
         numdays=len(b)+10
         base = datetime.date.today()
@@ -68,14 +68,19 @@ for item in list(pop.keys())[:14]:
         #print(b)
         #print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')
         try:
-            ax.annotate(s=str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-9, 20), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+            if len(b)==2:
+              #ax.annotate(s=str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-19, b[0]), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+              ax.annotate(s=str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(0.9, b[0]), xycoords = ax.get_yaxis_transform(), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+            elif len(b) >2:
+              ax.annotate(s=str(len(b)-1)+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(0.9, b[0]), xycoords = ax.get_yaxis_transform(), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+            
         except:
             #ax.annotate(s=str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-9, 10), fontsize=20, ha='center', c='C4')
             print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')  
         #ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
         plt.title(state, fontsize=20)
         plt.tight_layout()
-        plt.savefig(state+'_1.png')
+        plt.savefig('images/'+state+'_1.png')
     except:
         print(item)
         continue
