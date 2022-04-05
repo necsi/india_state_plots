@@ -560,6 +560,8 @@ for item in lk:
     ax.plot(da["date1"],da["avg_cases"],c='C4')
     ax.tick_params(labelsize=20)
     ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+    item = item.replace("&","and")
+    item = item.replace(","," and")
     plt.title(item, fontsize=20)
     plt.tight_layout()
     plt.savefig('images/'+item+"_3.png", dpi=150)
