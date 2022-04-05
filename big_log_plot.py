@@ -35,5 +35,4 @@ for item in list(pop.keys())[14:]:
         #ax.set_ylim(bottom=1, )                                                                                                                                      
         ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
         #print(b)                                                                                                                                                     
-        #print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')                                                                                    
-  
+        #print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')                                                                           
