@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -556,13 +555,14 @@ for item in lk:
     da=state_final_trans_mar1[state_final_trans_mar1["state"]==item]
     tt=[20 for x in range(0,len(da))]
     fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
-    ax.plot(da["date1"],tt)
-    ax.plot(da["date1"],da["avg_cases"],c='C4')
-    ax.tick_params(labelsize=20)
+    ax.plot(da["date1"],tt, label = '20 cases')
+    ax.legend(prop={'size': 20}, loc='upper left')
+    ax.plot(da["date1"],da["avg_cases"],c='C4', linewidth = 2)
+    ax.tick_params(labelsize=25)
     ax.xaxis.set_major_locator(plt.MaxNLocator(8))
     item = item.replace("&","and")
     item = item.replace(","," and")
-    plt.title(item, fontsize=20)
+    plt.title(item, fontsize=30)
     plt.tight_layout()
     plt.savefig('images/'+item+"_3.png", dpi=150)
     plt.close()
