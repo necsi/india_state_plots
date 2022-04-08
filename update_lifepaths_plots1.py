@@ -53,7 +53,7 @@ for item in list(pop.keys()):
 
         b = np.array([focus.values[-1]])
 
-        while b[-1] > pop[state] / 1e6 * threshold and slope <0 :
+        while b[-1] > pop[state] / 1e6 * threshold and slope <-0.001 :
             b = np.append(b, b[-1]*(1+slope))
         numdays=len(b)+10
         base = datetime.date.today()
