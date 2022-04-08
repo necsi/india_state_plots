@@ -62,7 +62,7 @@ for item in list(pop.keys()):
         #print(date_list)                                                                                                                    
         ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
         #threshold=1
-        ax.legend(prop={'size': 20})
+        ax.legend(prop={'size': 20}, loc = 'lower right')
         ax.tick_params(labelsize=22)
         ax.xaxis.set_major_locator(plt.MaxNLocator(8))
         #ax.set_ylim(bottom=1, )    
