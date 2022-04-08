@@ -5,7 +5,7 @@ name: Update India pngs
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   #schedule:
     #- cron: '15 6 * * *'
 
