@@ -65,6 +65,7 @@ for item in list(pop.keys()):
         ax.legend(prop={'size': 20}, loc = 'lower right')
         ax.tick_params(labelsize=22)
         ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+        ax.yaxis.set_major_locator(plt.MinNLocator(2))
         #ax.set_ylim(bottom=1, )    
         ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
         #print(b)
@@ -93,6 +94,10 @@ for item in list(pop.keys()):
         plt.title(state, fontsize=30)
         plt.tight_layout()
         plt.savefig('images/'+state+'_1.png')
+        ax.set_yscale('linear')
+        plt.savefig('images/'+state+'_lin_1.png')
+        ax.set_yscale('log')
+        plt.savefig('images/'+state+'_log_1.png')
     except:
         print(item)
         continue
