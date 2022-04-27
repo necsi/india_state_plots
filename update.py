@@ -563,6 +563,10 @@ for item in lk:
     item = item.replace("&","and")
     item = item.replace(","," and")
     plt.title(item, fontsize=30)
+    if da['avg_cases'].iloc[-1]<=20:
+      plt.title("\u25CF", loc='right',fontsize=50, color='green')
+    else:
+      plt.title("\u25CF", loc='right',fontsize=50, color='red')
     plt.tight_layout()
     plt.savefig('images/'+item+"_3.png", dpi=150)
     plt.close()
