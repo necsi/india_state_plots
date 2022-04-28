@@ -65,7 +65,9 @@ for item in list(pop.keys()):
             ax.legend(prop={'size': 20}, loc = 'lower right')
             ax.tick_params(labelsize=22)
             ax.xaxis.set_major_locator(plt.MaxNLocator(8))
-            ax.yaxis.set_major_locator(plt.MinNLocator(2))
+            formatter = ax.get_major_formatter()
+            ax.set_minor_formatter(formatter)
+            #ax.yaxis.set_major_locator(plt.MinNLocator(2))
             #ax.set_ylim(bottom=1, )    
             ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
             #print(b)
@@ -95,6 +97,62 @@ for item in list(pop.keys()):
             plt.tight_layout()
             plt.savefig('images/'+state+'_1.png')
             plt.savefig('images/'+state+'_log_1.png')
+
+            fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
+            ax.plot(focus.index, focus.values, alpha=0.5, linewidth=2)#, label=r'Daily cases in %s'%title)
+            ax.plot(focus.rolling(window=7, min_periods=1, center=True).mean(), c='green',alpha=0.4, ls='--', linewidth=2)    
+            for i,(a,b) in enumerate(days):
+                slope, intercept = optimize.curve_fit(linear_fit, np.arange(a,b), np.log(focus.values[a:b]+1))[0]
+                #print(np.arange(a,b))
+                if focus.values[a:b].mean() > 10:
+                  ax.plot(np.arange(a,b), np.exp(np.arange(a,b)*slope + intercept), c=('C'+str(i+1)))
+                  ax.annotate(np.round(np.exp(slope),3), xy=((a+b-2)/2, np.exp((a+b+2)/2*slope + intercept)), fontsize=24, c=('C'+str(i+1)))
+                
+
+            b = np.array([focus.values[-1]])
+
+            while b[-1] > pop[state] / 1e6 * threshold and slope <-0.001 :
+                b = np.append(b, b[-1]*(1+slope))
+            numdays=len(b)+10
+            base = datetime.date.today()
+            #pd.to_datetime(focus.index).strftime('%y/%m/%d')                                                                                    
+            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%y/%m/%d')  for x in range(0+numdays)]
+            #print(date_list)                                                                                                                    
+            ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
+            #threshold=1
+            ax.legend(prop={'size': 20}, loc = 'lower right')
+            ax.tick_params(labelsize=22)
+            ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+            #ax.yaxis.set_major_locator(plt.MinNLocator(2))
+            #ax.set_ylim(bottom=1, )    
+            ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
+            #print(b)
+            #print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')
+            try:
+                if len(b)==2:
+                  dy = b[-1] - b[0]
+                  dx = len(focus)+len(b) - len(focus)
+                  angle = np.rad2deg(np.arctan2(dy, dx))
+                  #angle = np.rad2deg(slope)
+                  plt.text(len(focus), b[0], str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', ha='left', va='bottom', rotation=angle, rotation_mode='anchor',c='C4', size = 20,transform_rotates_text=True)
+                  #ax.annotate(s=str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-19, b[0]), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+                  #ax.annotate(s=str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(0.9, b[0]), xycoords = ax.get_yaxis_transform(), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+                elif len(b) >2:
+                  dy = b[-1] - b[0]
+                  dx = len(focus)+len(b) - len(focus)
+                  angle = np.rad2deg(np.arctan2(dy, dx))
+                  #angle = np.rad2deg(slope)
+                  plt.text(len(focus)+ int(len(b)/4), b[int(len(b)/4)], str(len(b)-1)+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', ha='left', va='bottom', rotation=angle, rotation_mode='anchor',c='C4', size = 20,transform_rotates_text=True)
+                  #ax.annotate(s=str(len(b)-1)+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(0.9, b[0]), xycoords = ax.get_yaxis_transform(), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+
+            except:
+                #ax.annotate(s=str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-9, 10), fontsize=20, ha='center', c='C4')
+                print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')  
+            #ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
+            plt.title(state, fontsize=30)
+            plt.tight_layout()
+            plt.savefig('images/'+state+'_lin_1.png')
+            
         else:
             b = np.array([focus.values[-1]])
 
@@ -110,7 +168,7 @@ for item in list(pop.keys()):
             ax.legend(prop={'size': 20}, loc = 'lower right')
             ax.tick_params(labelsize=22)
             ax.xaxis.set_major_locator(plt.MaxNLocator(8))
-            ax.yaxis.set_major_locator(plt.MinNLocator(2))
+            #ax.yaxis.set_major_locator(plt.MinNLocator(2))
             #ax.set_ylim(bottom=1, )    
             ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
             #print(b)
@@ -140,6 +198,64 @@ for item in list(pop.keys()):
             plt.tight_layout()
             plt.savefig('images/'+state+'_1.png')
             plt.savefig('images/'+state+'_lin_1.png')
+
+            fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
+            ax.plot(focus.index, focus.values, alpha=0.5, linewidth=2)#, label=r'Daily cases in %s'%title)
+            ax.plot(focus.rolling(window=7, min_periods=1, center=True).mean(), c='green',alpha=0.4, ls='--', linewidth=2)    
+            for i,(a,b) in enumerate(days):
+                slope, intercept = optimize.curve_fit(linear_fit, np.arange(a,b), np.log(focus.values[a:b]+1))[0]
+                #print(np.arange(a,b))
+                if focus.values[a:b].mean() > 10:
+                  ax.plot(np.arange(a,b), np.exp(np.arange(a,b)*slope + intercept), c=('C'+str(i+1)))
+                  ax.annotate(np.round(np.exp(slope),3), xy=((a+b-2)/2, np.exp((a+b+2)/2*slope + intercept)), fontsize=24, c=('C'+str(i+1)))
+                
+
+            ax.set_yscale('log')
+            b = np.array([focus.values[-1]])
+
+            while b[-1] > pop[state] / 1e6 * threshold and slope <-0.001 :
+                b = np.append(b, b[-1]*(1+slope))
+            numdays=len(b)+10
+            base = datetime.date.today()
+            #pd.to_datetime(focus.index).strftime('%y/%m/%d')                                                                                    
+            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%y/%m/%d')  for x in range(0+numdays)]
+            #print(date_list)                                                                                                                    
+            ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
+            #threshold=1
+            ax.legend(prop={'size': 20}, loc = 'lower right')
+            ax.tick_params(labelsize=22)
+            ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+            formatter = ax.get_major_formatter()
+            ax.set_minor_formatter(formatter)
+            #ax.yaxis.set_major_locator(plt.MinNLocator(2))
+            #ax.set_ylim(bottom=1, )    
+            ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
+            #print(b)
+            #print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')
+            try:
+                if len(b)==2:
+                  dy = b[-1] - b[0]
+                  dx = len(focus)+len(b) - len(focus)
+                  angle = np.rad2deg(np.arctan2(dy, dx))
+                  #angle = np.rad2deg(slope)
+                  plt.text(len(focus), b[0], str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', ha='left', va='bottom', rotation=angle, rotation_mode='anchor',c='C4', size = 20,transform_rotates_text=True)
+                  #ax.annotate(s=str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-19, b[0]), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+                  #ax.annotate(s=str(len(b)-1)+' day until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(0.9, b[0]), xycoords = ax.get_yaxis_transform(), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+                elif len(b) >2:
+                  dy = b[-1] - b[0]
+                  dx = len(focus)+len(b) - len(focus)
+                  angle = np.rad2deg(np.arctan2(dy, dx))
+                  #angle = np.rad2deg(slope)
+                  plt.text(len(focus)+ int(len(b)/4), b[int(len(b)/4)], str(len(b)-1)+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', ha='left', va='bottom', rotation=angle, rotation_mode='anchor',c='C4', size = 20,transform_rotates_text=True)
+                  #ax.annotate(s=str(len(b)-1)+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(0.9, b[0]), xycoords = ax.get_yaxis_transform(), fontsize=20, ha='center', c='C4')#len(focus)+len(b)-9
+
+            except:
+                #ax.annotate(s=str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl', xy=(len(focus)+len(b)-9, 10), fontsize=20, ha='center', c='C4')
+                print(str(len(b))+' days until \ndaily cases\n<'+str(threshold)+' /Mppl')  
+            #ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
+            plt.title(state, fontsize=30)
+            plt.tight_layout()
+            plt.savefig('images/'+state+'_log_1.png')
             
     except:
         print(item)
