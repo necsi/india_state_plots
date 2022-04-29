@@ -95,8 +95,8 @@ for item in list(pop.keys()):
             #ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
             plt.title(state, fontsize=30)
             plt.tight_layout()
-            plt.savefig('images/'+state+'_1.png')
-            plt.savefig('images/'+state+'_log_1.png')
+            plt.savefig('images/'+state+'_1.png',bbox_inches='tight')
+            plt.savefig('images/'+state+'_log_1.png',bbox_inches='tight')
 
             fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
             ax.plot(focus.index, focus.values, alpha=0.5, linewidth=2)#, label=r'Daily cases in %s'%title)
@@ -151,7 +151,7 @@ for item in list(pop.keys()):
             #ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
             plt.title(state, fontsize=30)
             plt.tight_layout()
-            plt.savefig('images/'+state+'_lin_1.png')
+            plt.savefig('images/'+state+'_lin_1.png',bbox_inches='tight')
             
         else:
             b = np.array([focus.values[-1]])
@@ -196,8 +196,8 @@ for item in list(pop.keys()):
             #ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
             plt.title(state, fontsize=30)
             plt.tight_layout()
-            plt.savefig('images/'+state+'_1.png')
-            plt.savefig('images/'+state+'_lin_1.png')
+            plt.savefig('images/'+state+'_1.png',bbox_inches='tight')
+            plt.savefig('images/'+state+'_lin_1.png',bbox_inches='tight')
 
             fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
             ax.plot(focus.index, focus.values, alpha=0.5, linewidth=2)#, label=r'Daily cases in %s'%title)
@@ -255,7 +255,7 @@ for item in list(pop.keys()):
             #ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label='1/Mppl', linewidth=2)
             plt.title(state, fontsize=30)
             plt.tight_layout()
-            plt.savefig('images/'+state+'_log_1.png')
+            plt.savefig('images/'+state+'_log_1.png',bbox_inches='tight')
             
     except:
         print(item)
