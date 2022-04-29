@@ -1,9 +1,11 @@
+import matplotlib
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import optimize
 import datetime
 from matplotlib.ticker import FormatStrFormatter
+from matplotlib.ticker import ScalarFormatter
 '''
 numdays=100
 base = datetime.date.today()
@@ -65,8 +67,43 @@ for item in list(pop.keys()):
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
             ax.tick_params(labelsize=30)
-            plt.tick_params(axis='y', which='minor')
-            ax.yaxis.set_minor_formatter(FormatStrFormatter("%.1f"))
+            
+            # user controls
+            #####################################################
+            sub_ticks = [10,20,50] # fill these midpoints
+            sub_range = [-1,8] # from 100000000 to 0.000000001
+            format = "%.0f" # standard float string formatting
+
+            # set scalar and string format floats
+            #####################################################
+            ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
+            ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter(format))
+            #ax.yaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
+            #ax.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter(format))
+
+            #force 'autoscale'
+            #####################################################
+            yd = [] #matrix of y values from all lines on plot
+            for n in range(len(plt.gca().get_lines())):
+                    line = plt.gca().get_lines()[n]
+                    yd.append((line.get_ydata()).tolist())
+            yd = [item for sublist in yd for item in sublist]
+            ymin, ymax = np.min(yd), np.max(yd)
+            ax.set_ylim([0.9*ymin, 1.1*ymax])
+
+            # add sub ticks
+            #####################################################
+            set_sub_formatter=[]
+            for i in sub_ticks:
+                for j in range(sub_range[0],sub_range[1]):
+                    set_sub_formatter.append(i*10**j)
+            k = []
+            for l in set_sub_formatter:
+                if ymin<l<ymax:
+                    k.append(l)
+            ax.set_yticks(k)
+            #####################################################
+            
             ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #formatter = ax.get_major_formatter()
             #ax.set_minor_formatter(formatter)
@@ -227,8 +264,43 @@ for item in list(pop.keys()):
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
             ax.tick_params(labelsize=30)
-            plt.tick_params(axis='y', which='minor')
-            ax.yaxis.set_minor_formatter(FormatStrFormatter("%.1f"))
+            
+            # user controls
+            #####################################################
+            sub_ticks = [10,20,50] # fill these midpoints
+            sub_range = [-1,8] # from 100000000 to 0.000000001
+            format = "%.0f" # standard float string formatting
+
+            # set scalar and string format floats
+            #####################################################
+            ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
+            ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter(format))
+            #ax.yaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
+            #ax.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter(format))
+
+            #force 'autoscale'
+            #####################################################
+            yd = [] #matrix of y values from all lines on plot
+            for n in range(len(plt.gca().get_lines())):
+                    line = plt.gca().get_lines()[n]
+                    yd.append((line.get_ydata()).tolist())
+            yd = [item for sublist in yd for item in sublist]
+            ymin, ymax = np.min(yd), np.max(yd)
+            ax.set_ylim([0.9*ymin, 1.1*ymax])
+
+            # add sub ticks
+            #####################################################
+            set_sub_formatter=[]
+            for i in sub_ticks:
+                for j in range(sub_range[0],sub_range[1]):
+                    set_sub_formatter.append(i*10**j)
+            k = []
+            for l in set_sub_formatter:
+                if ymin<l<ymax:
+                    k.append(l)
+            ax.set_yticks(k)
+            #####################################################
+            
             ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #formatter = ax.get_major_formatter()
             #ax.set_minor_formatter(formatter)
