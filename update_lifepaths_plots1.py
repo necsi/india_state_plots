@@ -37,7 +37,7 @@ for item in list(pop.keys()):
     days = [(45,60)] # the time window to fit the decline curve, 45-60 usually works (60 is the most recent date)
     try:
         focus = df[df['Region'] == state].set_index('Date', drop=True)
-        focus.index = pd.to_datetime(focus.index).strftime('%y/%m/%d')
+        focus.index = pd.to_datetime(focus.index).strftime('%m/%d/%y')
         focus = focus['Confirmed Cases'].diff()[-offset_days:] 
         title = state
         fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
@@ -58,8 +58,8 @@ for item in list(pop.keys()):
                 b = np.append(b, b[-1]*(1+slope))
             numdays=len(b)+10
             base = datetime.date.today()
-            #pd.to_datetime(focus.index).strftime('%y/%m/%d')                                                                                    
-            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%y/%m/%d')  for x in range(0+numdays)]
+            #pd.to_datetime(focus.index).strftime('%m/%d/%y')                                                                                    
+            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%m/%d/%y')  for x in range(0+numdays)]
             #print(date_list)                                                                                                                    
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
@@ -118,8 +118,8 @@ for item in list(pop.keys()):
                 b = np.append(b, b[-1]*(1+slope))
             numdays=len(b)+10
             base = datetime.date.today()
-            #pd.to_datetime(focus.index).strftime('%y/%m/%d')                                                                                    
-            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%y/%m/%d')  for x in range(0+numdays)]
+            #pd.to_datetime(focus.index).strftime('%m/%d/%y')                                                                                    
+            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%m/%d/%y')  for x in range(0+numdays)]
             #print(date_list)                                                                                                                    
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
@@ -163,8 +163,8 @@ for item in list(pop.keys()):
                 b = np.append(b, b[-1]*(1+slope))
             numdays=len(b)+10
             base = datetime.date.today()
-            #pd.to_datetime(focus.index).strftime('%y/%m/%d')                                                                                    
-            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%y/%m/%d')  for x in range(0+numdays)]
+            #pd.to_datetime(focus.index).strftime('%m/%d/%y')                                                                                    
+            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%m/%d/%y')  for x in range(0+numdays)]
             #print(date_list)                                                                                                                    
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
@@ -220,8 +220,8 @@ for item in list(pop.keys()):
                 b = np.append(b, b[-1]*(1+slope))
             numdays=len(b)+10
             base = datetime.date.today()
-            #pd.to_datetime(focus.index).strftime('%y/%m/%d')                                                                                    
-            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%y/%m/%d')  for x in range(0+numdays)]
+            #pd.to_datetime(focus.index).strftime('%m/%d/%y')                                                                                    
+            date_list = list(focus.index)+[(base + datetime.timedelta(days=x)).strftime('%m/%d/%y')  for x in range(0+numdays)]
             #print(date_list)                                                                                                                    
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
