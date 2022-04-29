@@ -548,7 +548,7 @@ from datetime import datetime
 #pro = datetime.strptime(date_n,'%Y-%m-%d').date()
 #state,date,new_cases,avg_cases,total_cases,recent_new,color
 lk=list(state_final_trans_mar1["state"].unique())
-state_final_trans_mar1["date1"]=pd.to_datetime(state_final_trans_mar1["date"]).dt.strftime('%y/%m/%d')
+state_final_trans_mar1["date1"]=pd.to_datetime(state_final_trans_mar1["date"]).dt.strftime('%m/%d/%y')
 #[datetime.strptime(x,'%Y-%m-%d').date() for x in state_final_trans_mar1["date"].to_list()]
 #pd.to_datetime(lk["date"])#,format='%Y-%m-%d,%H:%M:%S', errors='coerce')
 for item in lk:
