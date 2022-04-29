@@ -63,8 +63,8 @@ for item in list(pop.keys()):
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
-            ax.tick_params(labelsize=22)
-            ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+            ax.tick_params(labelsize=30)
+            ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #formatter = ax.get_major_formatter()
             #ax.set_minor_formatter(formatter)
             #ax.yaxis.set_major_locator(plt.MinNLocator(2))
@@ -121,8 +121,8 @@ for item in list(pop.keys()):
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
-            ax.tick_params(labelsize=22)
-            ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+            ax.tick_params(labelsize=30)
+            ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #ax.yaxis.set_major_locator(plt.MinNLocator(2))
             #ax.set_ylim(bottom=1, )    
             ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
@@ -166,8 +166,8 @@ for item in list(pop.keys()):
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
-            ax.tick_params(labelsize=22)
-            ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+            ax.tick_params(labelsize=30)
+            ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #ax.yaxis.set_major_locator(plt.MinNLocator(2))
             #ax.set_ylim(bottom=1, )    
             ax.plot(np.arange(len(focus),len(focus)+len(b)), b, ls='-.', c='C4')
@@ -223,8 +223,8 @@ for item in list(pop.keys()):
             ax.plot(date_list,[pop[state]/1e6* threshold for x in range(0,len(date_list))],'--', label=str(threshold)+'/Mppl', linewidth=2)
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
-            ax.tick_params(labelsize=22)
-            ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+            ax.tick_params(labelsize=30)
+            ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #formatter = ax.get_major_formatter()
             #ax.set_minor_formatter(formatter)
             #ax.yaxis.set_major_locator(plt.MinNLocator(2))
