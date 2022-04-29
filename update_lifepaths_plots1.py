@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import optimize
 import datetime
+from matplotlib.ticker import FormatStrFormatter
 '''
 numdays=100
 base = datetime.date.today()
@@ -64,6 +65,8 @@ for item in list(pop.keys()):
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
             ax.tick_params(labelsize=30)
+            plt.tick_params(axis='y', which='minor')
+            ax.yaxis.set_minor_formatter(FormatStrFormatter("%.1f"))
             ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #formatter = ax.get_major_formatter()
             #ax.set_minor_formatter(formatter)
@@ -224,6 +227,8 @@ for item in list(pop.keys()):
             #threshold=1
             ax.legend(prop={'size': 20}, loc = 'lower right')
             ax.tick_params(labelsize=30)
+            plt.tick_params(axis='y', which='minor')
+            ax.yaxis.set_minor_formatter(FormatStrFormatter("%.1f"))
             ax.xaxis.set_major_locator(plt.MaxNLocator(6))
             #formatter = ax.get_major_formatter()
             #ax.set_minor_formatter(formatter)
