@@ -77,7 +77,7 @@ for item in list(pop.keys()):
             # set scalar and string format floats
             #####################################################
             ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
-            ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter(format))
+            #ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter(format))
             #ax.yaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
             #ax.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter(format))
 
@@ -102,6 +102,7 @@ for item in list(pop.keys()):
                 if ymin<l<ymax:
                     k.append(l)
             ax.set_yticks(k)
+            ax.set_yticklabels(['{:7.1f}'.format(x*1) if x < 1 else '{:7.0f}'.format(x*1) for x in k])
             #####################################################
             
             ax.xaxis.set_major_locator(plt.MaxNLocator(6))
@@ -274,7 +275,7 @@ for item in list(pop.keys()):
             # set scalar and string format floats
             #####################################################
             ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
-            ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter(format))
+            #ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter(format))
             #ax.yaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
             #ax.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter(format))
 
@@ -299,6 +300,7 @@ for item in list(pop.keys()):
                 if ymin<l<ymax:
                     k.append(l)
             ax.set_yticks(k)
+            ax.set_yticklabels(['{:7.1f}'.format(x*1) if x < 1 else '{:7.0f}'.format(x*1) for x in k])
             #####################################################
             
             ax.xaxis.set_major_locator(plt.MaxNLocator(6))
