@@ -71,8 +71,8 @@ for item in list(pop.keys()):
             # user controls
             #####################################################
             sub_ticks = [10,20,50] # fill these midpoints
-            sub_range = [-1,8] # from 100000000 to 0.000000001
-            format = "%.0f" # standard float string formatting
+            sub_range = [-2,8] # from 100000000 to 0.000000001
+            #format = "%.0f" # standard float string formatting
 
             # set scalar and string format floats
             #####################################################
@@ -269,8 +269,8 @@ for item in list(pop.keys()):
             # user controls
             #####################################################
             sub_ticks = [10,20,50] # fill these midpoints
-            sub_range = [-1,8] # from 100000000 to 0.000000001
-            format = "%.0f" # standard float string formatting
+            sub_range = [-2,8] # from 100000000 to 0.000000001
+            #format = "%.0f" # standard float string formatting
 
             # set scalar and string format floats
             #####################################################
