@@ -26,8 +26,8 @@ pop= {"Andaman and Nicobar Islands":434192, "Andhra Pradesh":90959737, "Arunacha
       'Odisha':47645822, 'Puducherry':877010, 'Punjab':30141373, 'Rajasthan':81032689, 
       'Sikkim':619000, 'Tamil Nadu':77841267, 'Telangana':38510982, 'Tripura':4071, 
       'Uttar Pradesh':237882725, 'Uttarakhand':11250858, 'West Bengal':100580953, "Delhi":31181000}
-df = pd.read_csv('https://prsindia.org/covid-19/cases/download')
-df['Year'] = df['Date'].apply(lambda x : int(x.split('/')[2]))
+df = pd.read_csv('https://raw.githubusercontent.com/coder-amey/COVID-19-India_Data/master/time-series/India_aggregated.csv')
+df['Year'] = df['Date'].apply(lambda x : int(x.split('-')[2]))
 df = df[df['Year'] > 2019] # filter out rows with year = 1970,...etc
 df['Date'] = pd.to_datetime(df.Date, dayfirst=True)
 
@@ -40,7 +40,7 @@ for item in list(pop.keys()):
     try:
         focus = df[df['Region'] == state].set_index('Date', drop=True)
         focus.index = pd.to_datetime(focus.index).strftime('%m/%d/%y')
-        focus = focus['Confirmed Cases'].diff()[-offset_days:] 
+        focus = focus['Confirmed'].diff()[-offset_days:] 
         title = state
         fig, ax = plt.subplots(nrows=1, ncols=1, sharey=True, figsize=(16,9))
         ax.plot(focus.index, focus.values, alpha=0.5, linewidth=2)#, label=r'Daily cases in %s'%title)
