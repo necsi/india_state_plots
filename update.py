@@ -17,7 +17,7 @@ print('Latest update time is:',date)
 
 # In[3]:
 
-states = pd.read_csv("https://prsindia.org/covid-19/cases/download")
+states = pd.read_csv("https://raw.githubusercontent.com/coder-amey/COVID-19-India_Data/master/time-series/India_aggregated.csv")
 #states = pd.read_csv("https://api.covid19india.org/csv/latest/states.csv")
 #print(states)
 states=states[states["Date"].str.contains("202")]
@@ -28,15 +28,15 @@ states.columns= states.columns.str.lower()
 #01/01/1970
 # convert date column
 #states['date'] = pd.to_datetime(states['date'], format= '%Y-%m-%d')
-states['date'] = pd.to_datetime(states['date'], format= '%d/%m/%Y')
+states['date'] = pd.to_datetime(states['date'], format= '%d-%m-%Y')
 print(states['date'].unique())
 #states0=states.copy()
 #print(states[states["region"]=="Kerala"])
-states[states["region"]=="Assam"]["confirmed cases"].diff().plot()
-print(states[states["region"]=="Assam"]["confirmed cases"])
+states[states["region"]=="Assam"]["confirmed"].diff().plot()
+print(states[states["region"]=="Assam"]["confirmed"])
 #plt.show()
 # In[4]:
-do_not_include = ['India','State assignment pending','World']
+do_not_include = ['National Total']
 
 
 # In[5]:
@@ -131,7 +131,7 @@ states_mod
 
 
 # pivot data with states as columns
-pivot_cases = pd.pivot_table(states_mod, index = "date", columns = "region", values= "confirmed cases")
+pivot_cases = pd.pivot_table(states_mod, index = "date", columns = "region", values= "confirmed")
 
 # drop non-state columns
 pivot_cases = pivot_cases.drop(columns=do_not_include).fillna(0)
@@ -160,12 +160,12 @@ for column in pivot_newcases.columns[0:]:
     DailyNewCases = column
     states2=states0[states0["region"]==DailyNewCases].reset_index()
     ind=[str(x) for x in states2["date"].to_list()].index('2021-11-19 00:00:00')
-    ll0=states2["confirmed cases"].to_list()
+    ll0=states2["confirmed"].to_list()
     ll0[ind]=ll0[ind-1]
-    states2["confirmed cases"]=ll0
-    ll=states2["confirmed cases"].diff().to_frame().fillna(0)
-    pivot_newcases[DailyNewCases] = [0 for x in range(0,len(pivot_cases)-len(ll))]+ll['confirmed cases'].to_list()
-    print(states2["confirmed cases"].to_list())
+    states2["confirmed"]=ll0
+    ll=states2["confirmed"].diff().to_frame().fillna(0)
+    pivot_newcases[DailyNewCases] = [0 for x in range(0,len(pivot_cases)-len(ll))]+ll['confirmed'].to_list()
+    print(states2["confirmed"].to_list())
     states3.append(states2)
     #'2021-11-19'
     #print([str(x) for x in states2["date"].to_list()].index('2021-11-19 00:00:00'))
